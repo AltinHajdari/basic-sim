@@ -62,6 +62,7 @@ private:
   Address m_local;        //!< Local address to bind to
   TypeId  m_tid;          //!< Protocol TypeId
   uint64_t m_totalRx;     //!< Total bytes received
+  TracedCallback<Ptr<const Packet>, const Address&> m_rxTrace; //!< Application-delivered bytes
 
 };
 

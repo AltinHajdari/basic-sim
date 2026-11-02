@@ -55,7 +55,10 @@ TcpFlowSink::GetTypeId(void) {
                           "The type id of the protocol to use for the rx socket.",
                           TypeIdValue(TcpSocketFactory::GetTypeId()),
                           MakeTypeIdAccessor(&TcpFlowSink::m_tid),
-                          MakeTypeIdChecker());
+                          MakeTypeIdChecker())
+            .AddTraceSource("Rx", "TCP bytes delivered to the receiving application",
+                            MakeTraceSourceAccessor(&TcpFlowSink::m_rxTrace),
+                            "ns3::Packet::AddressTracedCallback");
     return tid;
 }
 
@@ -140,6 +143,7 @@ void TcpFlowSink::HandleRead(Ptr<Socket> socket) {
             break;
         }
         m_totalRx += packet->GetSize ();
+        m_rxTrace(packet, from);
 
         // Other fields that could be useful here if actually did something:
         // Size: packet->GetSize()
